@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include maktraders *.css
+recursive-include maktraders *.csv
+recursive-include maktraders *.html
+recursive-include maktraders *.ico
+recursive-include maktraders *.js
+recursive-include maktraders *.json
+recursive-include maktraders *.md
+recursive-include maktraders *.png
+recursive-include maktraders *.py
+recursive-include maktraders *.svg
+recursive-include maktraders *.txt
+recursive-exclude maktraders *.pyc
