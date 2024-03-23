@@ -162,7 +162,7 @@ class StockBalanceReport(object):
 		qty_dict = item_warehouse_map[group_by_key]
 		for field in self.inventory_dimensions:
 			qty_dict[field] = entry.get(field)
-		qty_dict["bonus"]=entry.get("bonus")
+		qty_dict["bonus"] = entry.get("bonus",0.0)
 
 		if entry.voucher_type == "Stock Reconciliation" and (not entry.batch_no or entry.serial_no):
 			qty_diff = flt(entry.qty_after_transaction) - flt(qty_dict.bal_qty)
@@ -186,12 +186,16 @@ class StockBalanceReport(object):
 				qty_dict.out_qty += abs(qty_diff)
 				qty_dict.out_val += abs(value_diff)
 
+
 		qty_dict.val_rate = entry.valuation_rate
 		qty_dict.bal_qty += qty_diff
 		qty_dict.bal_val += value_diff
 		qty_dict.total_qty += qty_diff
 		qty_dict.balance_value = Decimal(qty_dict.total_qty) * Decimal(entry.tp)
-		qty_dict.bonus = entry.bonus if entry.bonus else 0
+		if entry.bonus is not None:
+			qty_dict.bonus += entry.bonus
+		else:
+			qty_dict.bonus = 0
 
 	def initialize_data(self, item_warehouse_map, group_by_key, entry):
 		opening_data = self.opening_data.get(group_by_key, {})
