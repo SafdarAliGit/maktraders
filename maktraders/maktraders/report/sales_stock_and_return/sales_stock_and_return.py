@@ -193,7 +193,7 @@ class StockBalanceReport(object):
 		qty_dict.total_qty += qty_diff
 		qty_dict.balance_value = Decimal(qty_dict.total_qty) * Decimal(entry.tp)
 		if entry.bonus is not None:
-			qty_dict.bonus += entry.bonus
+			qty_dict.bonus = entry.bonus
 		else:
 			qty_dict.bonus = 0
 
