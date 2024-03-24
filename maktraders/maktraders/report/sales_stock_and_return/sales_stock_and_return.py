@@ -292,7 +292,7 @@ class StockBalanceReport(object):
 				sii.qty.as_("bonus")
 			)
 			.where(
-				((sle.docstatus < 2) & (sle.is_cancelled == 0)) | (sii.rate == 0)
+				(sle.is_cancelled == 0) | (sii.rate == 0)
 			)
 			.orderby(CombineDatetime(sle.posting_date, sle.posting_time))
 			.orderby(sle.creation)
