@@ -163,6 +163,10 @@ class StockBalanceReport(object):
 		for field in self.inventory_dimensions:
 			qty_dict[field] = entry.get(field)
 		qty_dict["bonus"] = entry.get("bonus",0.0)
+		qty_dict["net_sold_qty"] = entry.get("net_sold_qty",0.0)
+		qty_dict["bonus_amount"] = entry.get("bonus_amount",0.0)
+		qty_dict["net_sold_amount"] = entry.get("net_sold_amount",0.0)
+
 
 		if entry.voucher_type == "Stock Reconciliation" and (not entry.batch_no or entry.serial_no):
 			qty_diff = flt(entry.qty_after_transaction) - flt(qty_dict.bal_qty)
@@ -196,6 +200,9 @@ class StockBalanceReport(object):
 			qty_dict.bonus = entry.bonus
 		else:
 			qty_dict.bonus = 0
+		qty_dict.bonus_amount = Decimal(qty_dict.bonus) * Decimal(entry.tp)
+		qty_dict.net_sold_qty = qty_dict.out_qty - qty_dict.bonus
+		qty_dict.net_sold_amount = Decimal(qty_dict.net_sold_qty) * Decimal(entry.tp)
 
 	def initialize_data(self, item_warehouse_map, group_by_key, entry):
 		opening_data = self.opening_data.get(group_by_key, {})
@@ -223,6 +230,9 @@ class StockBalanceReport(object):
 				"val_rate": 0.0,
 				"balance_value": 0.0,
 				"bonus": 0.0,
+				"net_sold_qty": 0.0,
+				"bonus_amount": 0.0,
+				"net_sold_amount": 0.0
 			}
 		)
 
@@ -380,12 +390,6 @@ class StockBalanceReport(object):
 				"fieldtype": "Currency",
 				"options": "currency",
 				"width": 100
-			},
-			{
-				"label": _("Bonus"),
-				"fieldname": "bonus",
-				"fieldtype": "Float",
-				"width": 100
 			}
 		]
 
@@ -433,13 +437,35 @@ class StockBalanceReport(object):
 					"width": 80,
 				},
 
-
+				{
+					"label": _("Bonus"),
+					"fieldname": "bonus",
+					"fieldtype": "Float",
+					"width": 100
+				},
+				{
+					"label": _("Net Sold Qty"),
+					"fieldname": "net_sold_qty",
+					"fieldtype": "Float",
+					"width": 100
+				},
+				{
+					"label": _("Bonus AMT."),
+					"fieldname": "bonus_amount",
+					"fieldtype": "Currency",
+					"width": 100
+				},
+				{
+					"label": _("Net Sales AMT."),
+					"fieldname": "net_sold_amount",
+					"fieldtype": "Currency",
+					"width": 100
+				},
 				{
 					"label": _("Balance Qty"),
 					"fieldname": "bal_qty",
 					"fieldtype": "Float",
-					"width": 100,
-					"convertible": "bonus",
+					"width": 100
 				},
 				{
 					"label": _("Balance Value"),
