@@ -44,54 +44,8 @@ frappe.query_reports["Sales Stock And Return"] = {
 					query: "erpnext.controllers.queries.item_query",
 				};
 			}
-		},
-		{
-			"fieldname": "warehouse",
-			"label": __("Warehouse"),
-			"fieldtype": "Link",
-			"width": "80",
-			"options": "Warehouse",
-			get_query: () => {
-				let warehouse_type = frappe.query_report.get_filter_value("warehouse_type");
-				let company = frappe.query_report.get_filter_value("company");
+		}
 
-				return {
-					filters: {
-						...warehouse_type && {warehouse_type},
-						...company && {company}
-					}
-				}
-			}
-		},
-		{
-			"fieldname": "warehouse_type",
-			"label": __("Warehouse Type"),
-			"fieldtype": "Link",
-			"width": "80",
-			"options": "Warehouse Type"
-		},
-		{
-			"fieldname":"include_uom",
-			"label": __("Include UOM"),
-			"fieldtype": "Link",
-			"options": "UOM"
-		},
-		{
-			"fieldname": "show_variant_attributes",
-			"label": __("Show Variant Attributes"),
-			"fieldtype": "Check"
-		},
-		{
-			"fieldname": 'show_stock_ageing_data',
-			"label": __('Show Stock Ageing Data'),
-			"fieldtype": 'Check'
-		},
-		{
-			"fieldname": 'ignore_closing_balance',
-			"label": __('Ignore Closing Balance'),
-			"fieldtype": 'Check',
-			"default": 1
-		},
 	],
 
 	"formatter": function (value, row, column, data, default_formatter) {
