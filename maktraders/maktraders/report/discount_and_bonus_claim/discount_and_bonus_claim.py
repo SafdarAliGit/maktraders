@@ -134,49 +134,49 @@ def get_data(filters):
     query_result = frappe.db.sql(query, filters, as_dict=1)
 
     # Brand Wise Data Summarization and Appending Summary Row
-    current_brand = None
-    brand_data = []  # Collects data for each brand
-    brand_sum = {"amount": 0, "claim_amount": 0}  # Track sums for each brand
-
-    for record in query_result:
-        # Convert to Decimal and handle None values
-        amount = Decimal(record.get('amount', 0) or 0)
-        claim_amount = Decimal(record.get('claim_amount', 0) or 0)
-
-        # Calculate gross profit for the current record and round to 4 decimal places
-
-        # Check if we're still processing the same brand
-        if current_brand is None:
-            # First record, set the current brand
-            current_brand = record['inv_no']
-        elif record['inv_no'] != current_brand:
-            # We've hit a new brand, time to insert the summary for the previous brand
-            brand_data.append({
-                "inv_no": "TOTAL",
-                "amount": f"{brand_sum['amount']:.4f}",
-                "claim_amount": f"{brand_sum['claim_amount']:.4f}"
-            })
-            # Reset the sums for the new brand
-            current_brand = record['inv_no']
-            brand_sum = {"amount": 0, "claim_amount": 0}
-
-        # Update the sums with the current record
-        brand_sum["amount"] += amount
-        brand_sum["claim_amount"] += claim_amount
-
-        # Append the current record to brand_data
-        brand_data.append(record)
-
-    # After looping through all records, insert a summary for the last brand
-    if current_brand is not None:
-        brand_data.append({
-            "inv_no": "TOTAL",
-            "amount": f"{brand_sum['amount']:.4f}",
-            "claim_amount": f"{brand_sum['claim_amount']:.4f}"
-        })
-
-    # Append brand_data to data
-    data.extend(brand_data)
+    # current_brand = None
+    # brand_data = []  # Collects data for each brand
+    # brand_sum = {"amount": 0, "claim_amount": 0}  # Track sums for each brand
+    #
+    # for record in query_result:
+    #     # Convert to Decimal and handle None values
+    #     amount = Decimal(record.get('amount', 0) or 0)
+    #     claim_amount = Decimal(record.get('claim_amount', 0) or 0)
+    #
+    #     # Calculate gross profit for the current record and round to 4 decimal places
+    #
+    #     # Check if we're still processing the same brand
+    #     if current_brand is None:
+    #         # First record, set the current brand
+    #         current_brand = record['inv_no']
+    #     elif record['inv_no'] != current_brand:
+    #         # We've hit a new brand, time to insert the summary for the previous brand
+    #         brand_data.append({
+    #             "inv_no": "TOTAL",
+    #             "amount": f"{brand_sum['amount']:.4f}",
+    #             "claim_amount": f"{brand_sum['claim_amount']:.4f}"
+    #         })
+    #         # Reset the sums for the new brand
+    #         current_brand = record['inv_no']
+    #         brand_sum = {"amount": 0, "claim_amount": 0}
+    #
+    #     # Update the sums with the current record
+    #     brand_sum["amount"] += amount
+    #     brand_sum["claim_amount"] += claim_amount
+    #
+    #     # Append the current record to brand_data
+    #     brand_data.append(record)
+    #
+    # # After looping through all records, insert a summary for the last brand
+    # if current_brand is not None:
+    #     brand_data.append({
+    #         "inv_no": "TOTAL",
+    #         "amount": f"{brand_sum['amount']:.4f}",
+    #         "claim_amount": f"{brand_sum['claim_amount']:.4f}"
+    #     })
+    #
+    # # Append brand_data to data
+    # data.extend(brand_data)
 
     # TO REMOVE DUPLICATES
     keys_to_check = ['inv_no', 'posting_date', 'customer']
