@@ -50,8 +50,7 @@ frappe.query_reports["Sales Rep Item Sales Summary"] = {
 			"label": __("Sales Rep"),
 			"fieldtype": "Link",
 			"width": "80",
-			"options": "Sale Rep",
-			"reqd": 1
+			"options": "Sale Rep"
 		}
 
 	],
