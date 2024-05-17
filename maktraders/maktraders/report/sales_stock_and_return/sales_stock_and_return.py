@@ -19,6 +19,13 @@ def get_columns():
             "options": "Item",
             "width": 100,
         },
+        {
+            "label": _("Brand"),
+            "fieldname": "brand",
+            "fieldtype": "Link",
+            "options": "Brand",
+            "width": 100
+        },
         {"label": _("Item Name"),
          "fieldname": "item_name",
          "width": 150
@@ -67,6 +74,14 @@ def get_columns():
             "width": 80,
         },
         {
+            "label": _("Sale Qty"),
+            "fieldname": "sale_qty",
+            "fieldtype": "Float",
+            "width": 80
+
+        },
+
+        {
             "label": _("Out AMT."),
             "fieldname": "out_amount",
             "fieldtype": "Currency",
@@ -86,7 +101,12 @@ def get_columns():
             "fieldtype": "Currency",
             "width": 100
         },
-
+        {
+            "label": _("Net Sale Qty"),
+            "fieldname": "net_sale_qty",
+            "fieldtype": "Float",
+            "width": 100
+        },
         {
             "label": _("Return Qty"),
             "fieldname": "return_qty",
@@ -137,6 +157,7 @@ def get_data(filters):
     bonus_query = f"""
         SELECT 
             sii.item_code,
+            sii.brand,
             SUM(sii.qty) AS bonus
         FROM `tabSales Invoice` AS si, `tabSales Invoice Item` AS sii
         WHERE
@@ -181,6 +202,9 @@ def get_data(filters):
             if item_second["item_code"] == item_first["item_code"]:
                 item_second["bonus"] = item_first["bonus"]
                 item_second["bonus_amount"] = Decimal(item_first["bonus"]) * Decimal(item_second["tp"])
+                item_second["sale_qty"] = Decimal(item_second["out_qty"]) - Decimal(item_first["bonus"])
+                item_second["brand"] = item_first["brand"]
+                item_second["net_sale_qty"] = Decimal(item_second["sale_qty"]) - Decimal(item_second["return_qty"])
                 break
         else:
             item_second["bonus"] = 0
