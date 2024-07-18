@@ -201,10 +201,10 @@ def get_data(filters):
         for item_first in bonus_result:
             if item_second["item_code"] == item_first["item_code"]:
                 item_second["bonus"] = item_first["bonus"]
-                item_second["bonus_amount"] = Decimal(item_first["bonus"]) * Decimal(item_second["tp"])
-                item_second["sale_qty"] = Decimal(item_second["out_qty"]) - Decimal(item_first["bonus"])
+                item_second["bonus_amount"] = Decimal(item_first["bonus"] if item_first["bonus"] else 0) * Decimal(item_second["tp"] if item_second["tp"] else 0)
+                item_second["sale_qty"] = Decimal(item_second["out_qty"] if item_second["out_qty"] else 0) - Decimal(item_first["bonus"] if item_first["bonus"] else 0)
                 item_second["brand"] = item_first["brand"]
-                item_second["net_sale_qty"] = Decimal(item_second["sale_qty"]) - Decimal(item_second["return_qty"])
+                item_second["net_sale_qty"] = Decimal(item_second["sale_qty"] if item_second["sale_qty"] else 0) - Decimal(item_second["return_qty"] if item_second["return_qty"] else 0)
                 break
         else:
             item_second["bonus"] = 0
