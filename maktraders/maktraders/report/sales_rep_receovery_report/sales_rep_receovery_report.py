@@ -19,6 +19,12 @@ def get_columns():
             "width": 100
         },
         {
+            "label": _("Inv. Date"),
+            "fieldname": "inv_date",
+            "fieldtype": "Date",
+            "width": 100
+        },
+        {
             "label": _("Inv. #"),
             "fieldname": "inv_no",
             "fieldtype": "Link",
@@ -78,6 +84,7 @@ def get_data(filters):
     query = f"""
     SELECT 
         pe.posting_date,
+        si.posting_date AS inv_date,
         pei.reference_name AS inv_no,
         si.sale_rep_name AS sale_rep,
         pe.party AS party,
