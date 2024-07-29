@@ -98,6 +98,7 @@ def get_data(filters):
         pei.reference_doctype = 'Sales Invoice'
         AND si.docstatus = 1
         AND pe.payment_type = 'Receive'
+        AND pe.docstatus = 1
     """
 
     if conditions:
