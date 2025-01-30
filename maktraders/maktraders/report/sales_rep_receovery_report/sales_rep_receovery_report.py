@@ -98,8 +98,6 @@ def get_data(filters):
         AND si.docstatus = 1
         AND pe.payment_type = 'Receive'
         AND pe.status = 'Submitted'
-        AND pe.docstatus = 1
-
     """
 
     if conditions:
