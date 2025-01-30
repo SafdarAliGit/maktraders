@@ -89,7 +89,7 @@ def get_data(filters):
         si.sale_rep_name AS sale_rep,
         pe.party AS party,
         pei.total_amount,
-        pe.paid_amount AS allocated_amount
+        pe.allocated_amount
     FROM `tabPayment Entry` AS pe
     INNER JOIN `tabPayment Entry Reference` AS pei ON pe.name = pei.parent
     INNER JOIN `tabSales Invoice` AS si ON pei.reference_name = si.name 
