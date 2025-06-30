@@ -82,7 +82,7 @@ def get_columns():
         },
 
         {
-            "label": _("Out AMT."),
+            "label": _("Net Sale AMT."),
             "fieldname": "out_amount",
             "fieldtype": "Currency",
             "width": 100
@@ -110,6 +110,12 @@ def get_columns():
         {
             "label": _("Return Qty"),
             "fieldname": "return_qty",
+            "fieldtype": "Float",
+            "width": 100
+        },
+        {
+            "label": _("Purchase Return Qty"),
+            "fieldname": "purchase_return_qty",
             "fieldtype": "Float",
             "width": 100
         },
@@ -180,6 +186,7 @@ def get_data(filters):
         item.tp,
         SUM(CASE WHEN sle.posting_date >= '{filters.get('from_date')}' AND  sle.posting_date <= '{filters.get('to_date')}' AND sle.voucher_type = 'Purchase Invoice' AND sle.actual_qty > 0 THEN sle.actual_qty ELSE 0 END) AS in_qty,
         SUM(CASE WHEN sle.posting_date >= '{filters.get('from_date')}' AND  sle.posting_date <= '{filters.get('to_date')}' AND sle.voucher_type = 'Sales Invoice' AND sle.actual_qty > 0 THEN sle.actual_qty ELSE 0 END) AS return_qty,
+        SUM(CASE WHEN sle.posting_date >= '{filters.get('from_date')}' AND  sle.posting_date <= '{filters.get('to_date')}' AND sle.voucher_type = 'Purchase Invoice' AND sle.actual_qty < 0 THEN sle.actual_qty ELSE 0 END) AS purchase_return_qty,
         SUM(CASE WHEN sle.posting_date < '{filters.get('from_date')}' THEN sle.actual_qty ELSE 0 END) AS opening_qty,
         (SUM(CASE WHEN sle.posting_date >= '{filters.get('from_date')}' AND  sle.posting_date <= '{filters.get('to_date')}' AND sle.voucher_type = 'Purchase Invoice' AND sle.actual_qty > 0 THEN sle.actual_qty ELSE 0 END) + SUM(CASE WHEN sle.posting_date < '{filters.get('from_date')}' THEN sle.actual_qty ELSE 0 END)) AS total_qty,
         ABS(SUM(CASE WHEN sle.posting_date >= '{filters.get('from_date')}' AND  sle.posting_date <= '{filters.get('to_date')}' AND sle.voucher_type = 'Sales Invoice' AND sle.actual_qty < 0 THEN sle.actual_qty ELSE 0 END)) AS out_qty,
