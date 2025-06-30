@@ -84,7 +84,7 @@ def get_data(filters):
             SUM(sii.qty) AS sale_qty,
             ABS(SUM(CASE WHEN sii.qty < 0 THEN sii.qty ELSE 0 END)) AS return_qty,
             SUM(CASE WHEN sii.rate = 0 THEN sii.qty ELSE 0 END) AS bonus,
-            (SUM(sii.qty) -  ABS(SUM(CASE WHEN sii.qty < 0 THEN sii.qty ELSE 0 END))) AS net_qty ,
+            ((SUM(sii.qty) -  ABS(SUM(CASE WHEN sii.qty < 0 THEN sii.qty ELSE 0 END)))-SUM(CASE WHEN sii.rate = 0 THEN sii.qty ELSE 0 END)) AS net_qty ,
             SUM(sii.amount) AS sale_amount           
         FROM `tabSales Invoice` si
         LEFT JOIN `tabSales Invoice Item` sii ON si.name = sii.parent
