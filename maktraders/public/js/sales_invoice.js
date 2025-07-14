@@ -22,6 +22,7 @@ frappe.ui.form.on('Sales Invoice Item', {
                     
                     // Set initial rate = TP
                     frappe.model.set_value(cdt, cdn, 'rate', r.message);
+                    frappe.model.set_value(cdt, cdn, 'disc_percent', 1);
                     frappe.model.set_value(cdt, cdn, 'disc_percent', 0);
                     
                     // If discount exists, calculate discounted rate
