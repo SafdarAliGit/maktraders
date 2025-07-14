@@ -9,4 +9,4 @@ def get_item_tp(item_code):
         return 0
         
     tp = frappe.db.get_value("Item", item_code, "tp") or 0
-    return flt(tp)
+    return float(tp)
